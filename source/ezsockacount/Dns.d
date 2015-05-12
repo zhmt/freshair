@@ -1,4 +1,4 @@
-﻿module ezsockacount.Dns;
+﻿module freshair.Dns;
 
 import std.bitmanip;
 

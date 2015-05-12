@@ -1,11 +1,8 @@
-﻿module ezsockacount.NetUtil;
+﻿module freshair.NetUtil;
 
 //import vibe.d;
 import std.bitmanip;
-import thrift.protocol.compact;
-import thrift.protocol.base;
-import thrift.transport.memory;
-import thrift.transport.base;
+
 import std.stdio;
 
 import std.math;
@@ -16,11 +13,8 @@ import gamelibd.util;
 
 class NetUtil
 {
-	public static __gshared string serverIp;
-	public static __gshared ushort serverPort;
 	public static __gshared ushort serverDnsPort;
-
-	public static __gshared ushort clientPort;
+	public static __gshared ushort proxyPort;
 
 
 	static void printObj(SRC)(ref SRC src)

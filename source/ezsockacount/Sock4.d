@@ -1,15 +1,10 @@
-﻿module ezsockacount.Sock4;
+﻿module freshair.Sock4;
 
 //import vibe.d;
 import std.bitmanip;
-import thrift.protocol.compact;
-import thrift.protocol.base;
-import thrift.transport.memory;
-import thrift.transport.base;
+
 import std.stdio;
-import ezsockacount.NetUtil;
-import sock_types;
-import ezsockacount.SpeedLimitForwarder;
+import freshair.NetUtil;
 
 import gamelibd.net.conn;
 
@@ -68,7 +63,7 @@ class Sock4
 		}
 	}
 	
-	public void tryForward(Ptr!Conn client,SpeedLimitForwarder limiter)
+	public void tryForward(Ptr!Conn client)
 	{
 		CsPackHeader cs = new CsPackHeader();
 		cs.recvExceptVer(client);
@@ -76,28 +71,19 @@ class Sock4
 
 		Ptr!Conn remote = null; 
 		try{
-			remote = connect(NetUtil.serverIp,NetUtil.serverPort);
+			remote = connect(cs.ip,cs.dstport);
 		}catch(Exception e){
 			NetUtil.closeTcpConn(client);
 			return ;
 		}
-		
-		Cmd cmd;
-		cmd.set!("cmdId")(Cmds.Connect);
-		Connect connect;
-		cmd.set!("connect")(connect);
-		cmd.connect.set!("ip")(cs.ip());
-		cmd.connect.set!("port")(cs.dstport);
-		ubyte[] data = NetUtil.serialObj(cmd);
-		NetUtil.writePacket(remote,data);
-		
+
 		ScPackHeader sc = new ScPackHeader();
 		sc.cd = 90;
 		sc.dstport = cs.dstport;
 		sc.dstip = cs.dstip;
 		sc.send(client);
 
-		limiter.tryForward(client,remote);
+		NetUtil.forwardAndJoin(client,remote);
 	}
 }
 

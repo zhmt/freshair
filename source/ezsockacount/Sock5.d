@@ -1,15 +1,11 @@
-﻿module ezsockacount.Sock5;
+﻿module freshair.Sock5;
 
 //import vibe.d;
 import std.bitmanip;
-import thrift.protocol.compact;
-import thrift.protocol.base;
-import thrift.transport.memory;
-import thrift.transport.base;
+
 import std.stdio;
-import ezsockacount.NetUtil;
-import sock_types;
-import ezsockacount.SpeedLimitForwarder;
+import freshair.NetUtil;
+
 import gamelibd.util;
 
 import gamelibd.net.conn;
@@ -138,7 +134,7 @@ class Sock5
 		}
 	}
 	
-	public void tryForward(Ptr!Conn client,SpeedLimitForwarder limiter)
+	public void tryForward(Ptr!Conn client)
 	{
 		scope(exit) NetUtil.closeTcpConn(client);
 		CsVer ver = new CsVer();
@@ -157,20 +153,10 @@ class Sock5
 			return;
 		}
 
-		Ptr!Conn remote = connect(NetUtil.serverIp,NetUtil.serverPort);
+		Ptr!Conn remote = connect(req.ip,req.dstport);
 		if(remote is null) return;
 		scope(exit) NetUtil.closeTcpConn(remote);
 
-		Cmd cmd;
-		cmd.set!("cmdId")(Cmds.Connect);
-		Connect connect;
-		cmd.set!("connect")(connect);
-		cmd.connect.set!("ip")(req.ip());
-		cmd.connect.set!("port")(req.dstport);
-		ubyte[] data = NetUtil.serialObj(cmd);
-		NetUtil.writePacket(remote,data);
-
-		
 		ScForward rspForward = new ScForward();
 		rspForward.rep = 0;
 		rspForward.atyp = 1;
@@ -179,7 +165,7 @@ class Sock5
 		rspForward.bndport = remote.getLocalPort();
 		rspForward.send(client);
 
-		limiter.tryForward(client,remote);
+		NetUtil.forwardAndJoin(client,remote);
 	}
 }
 

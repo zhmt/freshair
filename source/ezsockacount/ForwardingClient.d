@@ -1,16 +1,12 @@
-﻿module ezsockacount.ForwardingClient;
+﻿module freshair.ForwardingClient;
 
 //import vibe.d;
 import std.bitmanip;
-import thrift.protocol.compact;
-import thrift.protocol.base;
-import thrift.transport.memory;
-import thrift.transport.base;
+
 import std.stdio;
-import ezsockacount.NetUtil;
-import ezsockacount.Sock4;
-import ezsockacount.Sock5;
-import ezsockacount.SpeedLimitForwarder;
+import freshair.NetUtil;
+import freshair.Sock4;
+import freshair.Sock5;
 
 import gamelibd.net.conn;
 import gamelibd.util;
@@ -20,17 +16,16 @@ import gamelibd.util;
  */ 
 class ForwardingClient
 {
-	private SpeedLimitForwarder limiter ;
 
 	this()
 	{
-		limiter = new SpeedLimitForwarder;
+
 	}
 
 	void listen()
 	{
 		Acceptor acc = new Acceptor();
-		acc.listen("0.0.0.0",NetUtil.clientPort,100);
+		acc.listen("0.0.0.0",NetUtil.proxyPort,100);
 		acc.accept((Ptr!Conn conn){
 				handleConn(conn);
 			});
@@ -44,12 +39,12 @@ class ForwardingClient
 		if(buf[0]==4)
 		{
 			Sock4 sock = new Sock4();
-			sock.tryForward(conn,limiter);
+			sock.tryForward(conn);
 		}else if(buf[0]==5)
 		{
 			//debug writeFlush("sock5");
 			Sock5 sock = new Sock5();
-			sock.tryForward(conn,limiter);
+			sock.tryForward(conn);
 		}else
 		{
 			conn.close();
