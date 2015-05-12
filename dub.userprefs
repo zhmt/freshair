@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="dub.json">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Default" PreferredExecutionTarget="debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="source/ezsockacount/DnsForwardingClient.d">
+    <Files>
+      <File FileName="source/ezsockacount/Dns.d" Line="38" Column="3" />
+      <File FileName="source/ezsockacount/DnsForwardingClient.d" Line="119" Column="17" />
+      <File FileName="../gamelibd/source/gamelibd/net/conn.d" Line="68" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
