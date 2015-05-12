@@ -2,7 +2,7 @@
 import std.stdio;
 
 //import freshair.DnsForwardingClient;
-import freshair.ForwardingClient;
+import freshair.ForwardingServer;
 import freshair.NetUtil;
 
 import std.bitmanip;
@@ -22,7 +22,7 @@ void main(string[] args)
 	if(startCient!=0)
 	{
 		auto atask = spawn({
-				ForwardingClient acc = new ForwardingClient();
+				ForwardingServer acc = new ForwardingServer();
 				acc.listen();
 			});
 		//tasks ~= atask;

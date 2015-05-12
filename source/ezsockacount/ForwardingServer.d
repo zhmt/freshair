@@ -1,4 +1,4 @@
-﻿module freshair.ForwardingClient;
+﻿module freshair.ForwardingServer;
 
 //import vibe.d;
 import std.bitmanip;
@@ -14,7 +14,7 @@ import gamelibd.util;
 /**
  * sock4/5 server
  */ 
-class ForwardingClient
+class ForwardingServer
 {
 
 	this()

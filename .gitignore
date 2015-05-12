@@ -1,0 +1,4 @@
+
+*.o
+
+.dub/build/application-debug-linux.posix-x86_64-dmd_2067-1F9A5CA760B1C18AD88A0044DB967E71/freshair
